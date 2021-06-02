@@ -1,8 +1,11 @@
-FROM nginx:alpine
+FROM nginx:alpine as build
 WORKDIR /app
-COPY ["package.json", "./"] 
+COPY . .
 RUN npm install
-COPY  .  .
-CMD ["npm", "run", "build"] 
-COPY app/build /usr/share/nginx/html
+RUN npm run build
+
+FROM nginx:stable-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
 LABEL maintainer = "railway17@outlook.com"
