@@ -4,5 +4,5 @@ COPY ["package.json", "./"]
 RUN npm install
 COPY  .  .
 CMD ["npm", "run", "build"] 
-COPY build /usr/share/nginx/html
+COPY app/build /usr/share/nginx/html
 LABEL maintainer = "railway17@outlook.com"
